@@ -2,10 +2,12 @@
 import { reactive, ref } from 'vue';
 import data from './assets/data';
 
-const minMax = [1, 3]; //[3, 7];
+const singleValue = ref(false);
+const minMax = [3, 7];
 const combo = () => {
   let question = '';
-  for(let i = 0; i < minMax[0] + Math.floor(Math.random() * minMax[1]); i++)
+  let range = singleValue.value ? 1 : (minMax[0] + Math.floor(Math.random() * minMax[1]));
+  for(let i = 0; i < range; i++)
   {
     /*
     */
@@ -20,21 +22,36 @@ const combo = () => {
   //console.log(question);
   return question;
 }
+
+function GetNewSingle() {
+  singleValue.value = true;
+  GetNewQuestion();
+}
+
+function GetNewCombo() {
+  singleValue.value = false;
+  GetNewQuestion();
+}
+
 const selectedSequence = ref(combo());
-function GetNewSequence() {
+function GetNewQuestion() {
+  input.value = '';
+  incorrectValues.value = [];
+  isCorrect.value = false;
   answered.value = false;
   selectedSequence.value = combo();
   //console.log('new combo: ', selectedSequence.value);
 }
 
 const input = ref('');
+const incorrectValues = ref([]);
 const isCorrect = ref(true);
 const answered = ref(false);
 function CheckAnswer() {
+  incorrectValues.value = [];
   answered.value = true;
-  const answer = input.value.split(' ');
+  const answer = input.value.toLowerCase().split(' ');
   const question = selectedSequence.value.split('');
-  const incorrectValues = ref([]);
   for (let i =  0; i < question.length; i++) {
     //console.log('question: ', question[i], ' input: ', input.value, ' answer: ', answer[i], ' answer array: ', answer, ' reference: ', Object.values(data.numbers[question[i]]).join(''))
     if(!isNaN(Number(question[i]))) {
@@ -100,9 +117,10 @@ function CheckAnswer() {
     <input
       v-model="input"
       placeholder="phonetic word"/>
-    <input type="button" value="check answer" @click="CheckAnswer()" />
-    <input type="button" value="select new combo" @click="GetNewSequence()" />
-    <span v-if="answered && !isCorrect">Check values {{ incorrectValues }}</span>
+    <input type="button" value="check answer" @click="CheckAnswer();" />
+    <input type="button" value="select single value" @click="GetNewSingle()" />
+    <input type="button" value="select new combo" @click="GetNewCombo()" />
+    <span v-if="answered && !isCorrect">Check values {{ incorrectValues.join('') }}</span>
     <span v-if="answered && isCorrect">Well done!</span>
   </div>
 </template>
