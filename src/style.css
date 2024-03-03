@@ -1,0 +1,40 @@
+@font-face {
+    font-family: 'blackOps';
+    src: url('./assets/fonts/BlackOpsOne-Regular.ttf');
+}
+@font-face {
+    font-family: 'specialElite';
+    src: url('./assets/fonts/SpecialElite-Regular.ttf');
+}
+@font-face {
+    font-family: 'graduate';
+    src: url('./assets/fonts/Graduate-Regular.ttf');
+}
+@font-face {
+    font-family: 'lato';
+    src: url('./assets/fonts/Lato-Regular.ttf');
+}
+@font-face {
+    font-family: 'latoB';
+    src: url('./assets/fonts/Lato-Bold.ttf');
+}
+@font-face {
+    font-family: 'rationale';
+    src: url('./assets/fonts/Rationale-Regular.ttf');
+}
+@font-face {
+    font-family: 'rubik';
+    src: url('./assets/fonts/RubikDirt-Regular.ttf');
+}
+@font-face {
+    font-family: 'stickNoBills';
+    src: url('./assets/fonts/StickNoBills-VariableFont_wght.ttf');
+}
+
+h1 {
+    font-family: 'blackOps';
+}
+
+*:not(h1) {
+    font-family: 'specialElite';
+}

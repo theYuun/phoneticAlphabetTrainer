@@ -1,129 +1,161 @@
 <script setup>
-import { reactive, ref } from 'vue';
-import data from './assets/data';
+import { ref } from 'vue';
 
-const singleValue = ref(false);
-const minMax = [3, 7];
-const combo = () => {
-  let question = '';
-  let range = singleValue.value ? 1 : (minMax[0] + Math.floor(Math.random() * minMax[1]));
-  for(let i = 0; i < range; i++)
-  {
-    /*
-    */
-    //console.log('alphabet key: ', Object.keys(data.alphabet)[Math.floor(Math.random() * Object.keys(data.alphabet).length)]);
-    const main = Object.keys(Math.random() < 0.7 ? data.alphabet : data.numbers);
-    //console.log('main: ', main);
-    const sub = main[Math.floor(Math.random() * main.length)];
-    //const sub = Object.keys(data.numbers)[Math.floor(Math.random() * Object.keys(data.numbers).length)];
-    //console.log('sub: ', sub);
-    question += sub.toUpperCase();
-  }
-  //console.log(question);
-  return question;
-}
+import AlphaNumericPractice from './components/alphaNumericPractice.vue';
 
-function GetNewSingle() {
-  singleValue.value = true;
-  GetNewQuestion();
-}
+const   alphaNumericTraining = ref(false),
+        fireClasses = ref(false),
+        extinguisherTypes = ref(false),
+        fireDrills = ref(false),
+        strikeDrills = ref(false);
 
-function GetNewCombo() {
-  singleValue.value = false;
-  GetNewQuestion();
-}
+const trainingType = ref('');
 
-const selectedSequence = ref(combo());
-function GetNewQuestion() {
-  input.value = '';
-  incorrectValues.value = [];
-  isCorrect.value = false;
-  answered.value = false;
-  selectedSequence.value = combo();
-  //console.log('new combo: ', selectedSequence.value);
-}
-
-const input = ref('');
-const incorrectValues = ref([]);
-const isCorrect = ref(true);
-const answered = ref(false);
-function CheckAnswer() {
-  incorrectValues.value = [];
-  answered.value = true;
-  const answer = input.value.toLowerCase().split(' ');
-  const question = selectedSequence.value.split('');
-  for (let i =  0; i < question.length; i++) {
-    //console.log('question: ', question[i], ' input: ', input.value, ' answer: ', answer[i], ' answer array: ', answer, ' reference: ', Object.values(data.numbers[question[i]]).join(''))
-    if(!isNaN(Number(question[i]))) {
-      console.log('answer: ', answer[i], ' reference: ', Object.values(data.numbers[question[i]]).join(''))
-      if(answer[i] !== Object.values(data.numbers[question[i]]).join('')) {
-        incorrectValues.value.push(i);
-        console.log('wrong number: ', incorrectValues.value)
-      }
-    }
-    else {
-      console.log('answer: ', answer[i])
-      console.log(' 0: ', Object.values(data))
-      console.log(' 1: ', Object.values(data.alphabet))
-      console.log(' 2: ', question[i])
-      console.log(' reference: ', Object.values(data.alphabet[question[i].toLowerCase()]).join(''))
-      console.log(' 4: ', data.alphabet[question[i].toLowerCase()])
-      if(answer[i] !== Object.values(data.alphabet[question[i].toLowerCase()]).join(''))
-        incorrectValues.value.push(i)
-        console.log('wrong letter: ', incorrectValues.value)
-    }
-  }
-  // error about is that the match is happening on only the first letter of the data.numbers/data.alphabet values
-  /*
-  /*
-  for (let i = 0; i < question.length; i++) {
-    if(typeof question[i] === 'string' && !isNaN(question[i])) {
-      console.log('answer: ', answer[i], ' reference: ', Object.entries(data.numbers[question[i]]))
-      
-      if(answer[i] !== data.numbers[question[i]]) {
-        incorrectValues.value.push(i);
-        console.log(i);
-      }
-      
-    }
-    else if(typeof question[i] === 'string' && isNaN(question[i])) {
-      console.log('answer: ', answer[i], ' reference: ', Object.entries(data.alphabet[question[i]]))
-      
-      if(answer[i] !== data.alphabet[question[i]]) {
-        incorrectValues.value.push(i);
-        console.log(i);
-      }
-      
-    }
-  }
-  */
-  isCorrect.value = incorrectValues.value.length > 0 ? false : true;
-  console.log(isCorrect.value);
+function SetTraining(type) {
+    if(trainingType.value == type)
+        trainingType.value = '';
+    else
+        trainingType.value = type;
 }
 
 </script>
 
 <template>
-  <!--
-    Add function to randomly select a letter from the phonetic alphabet and prompts the correct reference
-    Add another function to display a letter and number combo with prompt to fill in entire correct sequence
-  -->
-  <div>
-    <span>{{ selectedSequence }}</span>
-    <!--
-
-      @input="console.log(input)"
-    -->
-    <input
-      v-model="input"
-      placeholder="phonetic word"/>
-    <input type="button" value="check answer" @click="CheckAnswer();" />
-    <input type="button" value="select single value" @click="GetNewSingle()" />
-    <input type="button" value="select new combo" @click="GetNewCombo()" />
-    <span v-if="answered && !isCorrect">Check values {{ incorrectValues.join('') }}</span>
-    <span v-if="answered && isCorrect">Well done!</span>
-  </div>
+    <div class="app">
+        <div class="information">
+            <h1>Welcome to<br>Security Training</h1>
+            <p>Here you'll be able to practice many a required knowledge to be an effective security officer</p>
+            <p>Select from the list below which training you'd like to practice.</p>
+            <div class="trainingButtons">
+                <input type="checkbox" class="alphaNumericCheckbox" id="alphaNumeric" @change="SetTraining('alphaNumeric')" />
+                <label for="alphaNumeric" class="alphaNumericLabel" >
+                    Alpha Numeric Code
+                </label>
+                <input type="checkbox" class="fireClassesCheckbox" id="fireClasses" @change="SetTraining('fireClasses')" />
+                <label for="fireClasses" class="fireClassesLabel" >
+                    Fire Classes
+                </label>
+                <input type="checkbox" class="extinguisherTypesCheckbox" id="extinguisherTypes" @change="SetTraining('extinguisherTypes')" />
+                <label for="extinguisherTypes" class="extinguisherTypesLabel" >
+                    Extinguisher Types
+                </label>
+                <input type="checkbox" class="fireDrillsCheckbox" id="fireDrills" @change="SetTraining('fireDrills')" />
+                <label for="fireDrills" class="fireDrillsLabel" >
+                    Fire Drills
+                </label>
+                <input type="checkbox" class="strikeDrillsCheckbox" id="strikeDrills" @change="SetTraining('strikeDrills')" />
+                <label for="strikeDrills" class="strikeDrillsLabel" >
+                    Strike Drills
+                </label>
+            </div>
+        </div>
+        <div class="trainingExercises">
+            <AlphaNumericPractice v-if="trainingType=='alphaNumeric'" />
+        </div>
+    </div>
 </template>
 
-<style>
+<style scoped>
+    :root {
+        --colorH1Shadow: #000;
+    }
+    .app {
+        position: relative;
+        width: 500px;
+        margin: auto;
+        text-align: center;
+        background-color: #383;
+    }
+    .information {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background-color: #383;
+        margin: auto;
+        z-index: 1;
+    }
+    h1 {
+        font-size: 64px;
+        color: #5a5;
+        text-shadow:
+            -3px 3px var(--colorH1Shadow),
+            0px 3px var(--colorH1Shadow),
+            3px 3px var(--colorH1Shadow),
+            3px 0px var(--colorH1Shadow),
+            3px -3px var(--colorH1Shadow),
+            0px -3px var(--colorH1Shadow),
+            -3px -3px var(--colorH1Shadow),
+            -3px 0px var(--colorH1Shadow);
+    }
+    p {
+        width: 80%;
+        margin: 20px auto;
+        font-size: 30px;
+        text-align: center;
+        color: #7c7;
+    }
+    .trainingButtons {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin: 0 20px;
+        margin-top: 20px;
+        padding-bottom: 30px;
+    }
+    label {
+        position: relative;
+        width: fit-content;
+        margin: 0 auto;
+        font-family: 'graduate';
+        /*
+        font-family: 'lato';
+        font-family: 'latoB';
+        font-family: 'rationale';
+        font-family: 'stickNoBills';
+        font-family: 'rubik';
+        */
+    }
+    label::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 2px;
+        background-color: var(--colorH1Shadow);
+        background-color: #000;
+        visibility: hidden;
+    }
+    input[type=checkbox] {
+        position: absolute;
+        visibility: hidden;
+    }
+
+    .alphaNumericCheckbox:checked ~ .alphaNumericLabel::before,
+    .fireClassesCheckbox:checked ~ .fireClassesLabel::before,
+    .extinguisherTypesCheckbox:checked ~ .extinguisherTypesLabel::before,
+    .fireDrillsCheckbox:checked ~ .fireDrillsLabel::before,
+    .strikeDrillsCheckbox:checked ~ .strikeDrillsLabel::before {
+        visibility: visible;
+    }
+
+    @keyframes fall-in {
+        0% {
+            transform: translateY(-100%);
+        }
+        100% {
+            transform: translateY(0%);
+        }
+    }
+    .trainingExercises {
+        position: relative;
+        z-index: 0;
+        width: 100%;
+    }
+    .trainingExercises > div {
+        padding-bottom: 30px;
+        animation: fall-in 1s forwards;
+    }
+    input[type=checkbox]:checked ~ .trainingExercises {
+    }
 </style>
