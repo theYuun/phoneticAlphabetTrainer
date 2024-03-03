@@ -10,7 +10,42 @@ const   Divider = alpha.Divider,
         Label = alpha.Label,
         Paragraph = alpha.Paragraph,
         Span = alpha.Span;
-        
+
+const possibleAnswersArray = ref([])
+function GetNewPossibleAnswersArray(sequence) {
+    possibleAnswersArray.value = [];
+    console.log( sequence );
+    for (let i = 0; i < sequence.length; i++) {
+      if(!isNaN(Number(sequence[i]))) {
+        possibleAnswersArray.value.push(data.numbers[sequence[i].toLowerCase()]);
+        console.log(data.fakeNumbers)
+        console.log(data.fakeNumbers[sequence[i].toLowerCase()]);
+        let possibleFakeVals = [...data.fakeNumbers[sequence[i].toLowerCase()]]
+        let fakeValSelector = Math.random();
+        possibleAnswersArray.value.push(possibleFakeVals.splice(fakeValSelector < 0.3 ? 0 : fakeValSelector < 0.6 ? 1 : 2, 1).toString());
+        possibleAnswersArray.value.push(possibleFakeVals[Math.random() < 0.5 ? 0 : 1]);
+      }
+      else {
+        possibleAnswersArray.value.push(data.alphabet[sequence[i].toLowerCase()]);
+        console.log(data.fakeAlphabet)
+        console.log(data.fakeAlphabet[sequence[i].toLowerCase()]);
+        let possibleFakeVals = [...data.fakeAlphabet[sequence[i].toLowerCase()]]
+        let fakeValSelector = Math.random();
+        possibleAnswersArray.value.push(possibleFakeVals.splice(fakeValSelector < 0.3 ? 0 : fakeValSelector < 0.6 ? 1 : 2, 1).toString());
+        possibleAnswersArray.value.push(possibleFakeVals[Math.random() < 0.5 ? 0 : 1]);
+      }
+    }
+}
+const answerArray = ref([]);
+function AddAnswer(answer) {
+    answerArray.value.push(answer);
+    console.log(answerArray.value)
+}
+function RemoveAnswer(answer) {
+    const index = answerArray.value.indexOf(answer);
+    answerArray.value.splice(index, 1);
+}
+
 const singleValue = ref(false);
 const minMax = [3, 4];
 const combo = () => {
@@ -18,35 +53,29 @@ const combo = () => {
   let range = singleValue.value ? 1 : (minMax[0] + Math.floor(Math.random() * minMax[1]));
   for(let i = 0; i < range; i++)
   {
+    /*
     const val = Math.random();
     question += val < 0.3 ? 'A' : val < 0.6 ? 'B' : 'C';
-    /*
+    */
     const main = Object.keys(Math.random() < 0.7 ? data.alphabet : data.numbers);
     const sub = main[Math.floor(Math.random() * main.length)];
     question += sub.toUpperCase();
-    */
   }
+  GetNewPossibleAnswersArray(question);
   return question;
 }
 
 function GetNewCombo() {
-  GetNewQuestion();
-  input.value = '';
+    GetNewQuestion();
 }
 
 const selectedSequence = ref(combo());
 function GetNewQuestion() {
-  incorrectValues.value = [];
-  isCorrect.value = false;
-  answered.value = false;
-  selectedSequence.value = combo();
+    incorrectValues.value = [];
+    isCorrect.value = false;
+    answered.value = false;
+    selectedSequence.value = combo();
 }
-
-/* Typing Solution controls */
-
-const input = ref('');
-
-/* ####### */
 
 const incorrectValues = ref([]);
 const isCorrect = ref(true);
@@ -86,20 +115,6 @@ function CheckAnswer() {
   
 }
 */
-
-const possibleAnswersArray = ref([
-    'Alpha', 'Bravo', 'Charlie',
-])
-const answerArray = ref([]);
-function AddAnswer(answer) {
-    answerArray.value.push(answer);
-    console.log(answerArray.value)
-}
-function RemoveAnswer(answer) {
-    const index = answerArray.value.indexOf(answer);
-    answerArray.value.splice(index, 1);
-}
-
 </script>
 
 <template>
@@ -111,7 +126,7 @@ function RemoveAnswer(answer) {
         </Paragraph>
         <Divider
             className="answersContainer"
-            id="nswersContainer">
+            id="answersContainer">
             <!--
                 Add here numerous options to choose from
                 The options shall include the correct answers among a set of incorrect answers
@@ -187,5 +202,8 @@ function RemoveAnswer(answer) {
 </template>
 
 <style scoped>
-
+  .answersContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
 </style>
