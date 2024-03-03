@@ -1,25 +1,18 @@
 <script setup>
 import { provide, ref } from 'vue';
-import data from '../assets/data';
-import alpha from './alpha/alphas';
-import bravo from './bravo/bravos';
-import charlie from './charlie/charlies';
+import data from '../../assets/data';
+import alpha from '../alpha/alphas';
 
 const emits = defineEmits([])
 const Paragraph = alpha.Paragraph;
-const ParagraphQuestion = bravo.paragraphQuestion;
 const Heading2 = alpha.Heading2;
 const Divider = alpha.Divider;
 const Input = alpha.Input;
-const InputText = alpha.InputText;
-const InputButton = alpha.InputButton;
 const Label = alpha.Label;
 const Span = alpha.Span;
-const SolutionChoices = charlie.SolutionChoices;
-const SolutionTyping = charlie.SolutionTyping;
 
 const singleValue = ref(false);
-const minMax = [3, 2];
+const minMax = [3, 4];
 const combo = () => {
   let question = '';
   let range = singleValue.value ? 1 : (minMax[0] + Math.floor(Math.random() * minMax[1]));

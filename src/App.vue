@@ -1,9 +1,13 @@
 <script setup>
 import { ref } from 'vue';
 
-import AlphaNumericPractice from './components/alphaNumericPractice.vue';
+import charlie from './components/charlie/charlies';
 
-const   alphaNumericTraining = ref(false),
+const   AlphaNumericTypingPractice = charlie.AlphaNumericTypingPractice,
+        AlphaNumericButtonPractice = charlie.AlphaNumericButtonPractice;
+
+const   alphaNumericTypingTraining = ref(false),
+        alphaNumericButtonTraining = ref(false),
         fireClasses = ref(false),
         extinguisherTypes = ref(false),
         fireDrills = ref(false),
@@ -27,9 +31,13 @@ function SetTraining(type) {
             <p>Here you'll be able to practice many a required knowledge to be an effective security officer</p>
             <p>Select from the list below which training you'd like to practice.</p>
             <div class="trainingButtons">
-                <input type="checkbox" class="alphaNumericCheckbox" id="alphaNumeric" @change="SetTraining('alphaNumeric')" />
-                <label for="alphaNumeric" class="alphaNumericLabel" >
-                    Alpha Numeric Code
+                <input type="checkbox" class="alphaNumericTypingCheckbox" id="alphaNumericTyping" @change="SetTraining('alphaNumericTyping')" />
+                <label for="alphaNumericTyping" class="alphaNumericTypingLabel" >
+                    Alpha Numeric Typing
+                </label>
+                <input type="checkbox" class="alphaNumericButtonCheckbox" id="alphaNumericButton" @change="SetTraining('alphaNumericButton')" />
+                <label for="alphaNumericButton" class="alphaNumericButtonLabel" >
+                    Alpha Numeric Buttons
                 </label>
                 <input type="checkbox" class="fireClassesCheckbox" id="fireClasses" @change="SetTraining('fireClasses')" />
                 <label for="fireClasses" class="fireClassesLabel" >
@@ -50,7 +58,8 @@ function SetTraining(type) {
             </div>
         </div>
         <div class="trainingExercises">
-            <AlphaNumericPractice v-if="trainingType=='alphaNumeric'" />
+            <AlphaNumericTypingPractice v-if="trainingType==='alphaNumericTyping'" />
+            <AlphaNumericButtonPractice v-if="trainingType==='alphaNumericButton'" />
         </div>
     </div>
 </template>
@@ -131,7 +140,8 @@ function SetTraining(type) {
         visibility: hidden;
     }
 
-    .alphaNumericCheckbox:checked ~ .alphaNumericLabel::before,
+    .alphaNumericTypingCheckbox:checked ~ .alphaNumericTypingLabel::before,
+    .alphaNumericButtonCheckbox:checked ~ .alphaNumericButtonLabel::before,
     .fireClassesCheckbox:checked ~ .fireClassesLabel::before,
     .extinguisherTypesCheckbox:checked ~ .extinguisherTypesLabel::before,
     .fireDrillsCheckbox:checked ~ .fireDrillsLabel::before,

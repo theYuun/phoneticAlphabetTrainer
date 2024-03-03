@@ -1,7 +1,7 @@
-import SolutionChoices from './solutionChoices.vue';
-import SolutionTyping from './solutionTyping.vue';
+import AlphaNumericTypingPractice from './alphaNumericPractice.vue';
+import AlphaNumericButtonPractice from './alphaNumericButtonPractice.vue'
 
 export default {
-    SolutionTyping,
-    SolutionChoices,
+    AlphaNumericTypingPractice,
+    AlphaNumericButtonPractice,
 }
